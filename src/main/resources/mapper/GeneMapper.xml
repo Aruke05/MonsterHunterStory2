@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enuaruke.mhs2.mapper.GeneMapper">
+  <resultMap id="BaseResultMap" type="com.enuaruke.mhs2.pojo.Gene">
+    <id column="基因编号" jdbcType="INTEGER" property="基因编号" />
+    <result column="基因名称" jdbcType="VARCHAR" property="基因名称" />
+    <result column="技能类型" jdbcType="VARCHAR" property="技能类型" />
+    <result column="技能属性" jdbcType="VARCHAR" property="技能属性" />
+    <result column="必要等级" jdbcType="VARCHAR" property="必要等级" />
+    <result column="基因出处" jdbcType="VARCHAR" property="基因出处" />
+    <result column="技能名称" jdbcType="VARCHAR" property="技能名称" />
+    <result column="技能描述" jdbcType="VARCHAR" property="技能描述" />
+    <result column="羁绊消耗" jdbcType="VARCHAR" property="羁绊消耗" />
+    <result column="f9" jdbcType="VARCHAR" property="f9" />
+    <result column="f10" jdbcType="VARCHAR" property="f10" />
+    <result column="f11" jdbcType="VARCHAR" property="f11" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    基因编号, 基因名称, 技能类型, 技能属性, 必要等级, 基因出处, 技能名称, 技能描述, 羁绊消耗, f9, f10, f11
+  </sql>
+  <select id="selectByExample" parameterType="com.enuaruke.mhs2.pojo.GeneExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from 基因表
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from 基因表
+    where 基因编号 = #{基因编号,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from 基因表
+    where 基因编号 = #{基因编号,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.enuaruke.mhs2.pojo.GeneExample">
+    delete from 基因表
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="基因编号" keyProperty="基因编号" parameterType="com.enuaruke.mhs2.pojo.Gene" useGeneratedKeys="true">
+    insert into 基因表 (基因名称, 技能类型, 技能属性, 
+      必要等级, 基因出处, 技能名称, 技能描述, 
+      羁绊消耗, f9, f10, f11
+      )
+    values (#{基因名称,jdbcType=VARCHAR}, #{技能类型,jdbcType=VARCHAR}, #{技能属性,jdbcType=VARCHAR}, 
+      #{必要等级,jdbcType=VARCHAR}, #{基因出处,jdbcType=VARCHAR}, #{技能名称,jdbcType=VARCHAR}, #{技能描述,jdbcType=VARCHAR}, 
+      #{羁绊消耗,jdbcType=VARCHAR}, #{f9,jdbcType=VARCHAR}, #{f10,jdbcType=VARCHAR}, #{f11,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="基因编号" keyProperty="基因编号" parameterType="com.enuaruke.mhs2.pojo.Gene" useGeneratedKeys="true">
+    insert into 基因表
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="基因名称 != null">
+        基因名称,
+      </if>
+      <if test="技能类型 != null">
+        技能类型,
+      </if>
+      <if test="技能属性 != null">
+        技能属性,
+      </if>
+      <if test="必要等级 != null">
+        必要等级,
+      </if>
+      <if test="基因出处 != null">
+        基因出处,
+      </if>
+      <if test="技能名称 != null">
+        技能名称,
+      </if>
+      <if test="技能描述 != null">
+        技能描述,
+      </if>
+      <if test="羁绊消耗 != null">
+        羁绊消耗,
+      </if>
+      <if test="f9 != null">
+        f9,
+      </if>
+      <if test="f10 != null">
+        f10,
+      </if>
+      <if test="f11 != null">
+        f11,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="基因名称 != null">
+        #{基因名称,jdbcType=VARCHAR},
+      </if>
+      <if test="技能类型 != null">
+        #{技能类型,jdbcType=VARCHAR},
+      </if>
+      <if test="技能属性 != null">
+        #{技能属性,jdbcType=VARCHAR},
+      </if>
+      <if test="必要等级 != null">
+        #{必要等级,jdbcType=VARCHAR},
+      </if>
+      <if test="基因出处 != null">
+        #{基因出处,jdbcType=VARCHAR},
+      </if>
+      <if test="技能名称 != null">
+        #{技能名称,jdbcType=VARCHAR},
+      </if>
+      <if test="技能描述 != null">
+        #{技能描述,jdbcType=VARCHAR},
+      </if>
+      <if test="羁绊消耗 != null">
+        #{羁绊消耗,jdbcType=VARCHAR},
+      </if>
+      <if test="f9 != null">
+        #{f9,jdbcType=VARCHAR},
+      </if>
+      <if test="f10 != null">
+        #{f10,jdbcType=VARCHAR},
+      </if>
+      <if test="f11 != null">
+        #{f11,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.enuaruke.mhs2.pojo.GeneExample" resultType="java.lang.Long">
+    select count(*) from 基因表
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update 基因表
+    <set>
+      <if test="record.基因编号 != null">
+        基因编号 = #{record.基因编号,jdbcType=INTEGER},
+      </if>
+      <if test="record.基因名称 != null">
+        基因名称 = #{record.基因名称,jdbcType=VARCHAR},
+      </if>
+      <if test="record.技能类型 != null">
+        技能类型 = #{record.技能类型,jdbcType=VARCHAR},
+      </if>
+      <if test="record.技能属性 != null">
+        技能属性 = #{record.技能属性,jdbcType=VARCHAR},
+      </if>
+      <if test="record.必要等级 != null">
+        必要等级 = #{record.必要等级,jdbcType=VARCHAR},
+      </if>
+      <if test="record.基因出处 != null">
+        基因出处 = #{record.基因出处,jdbcType=VARCHAR},
+      </if>
+      <if test="record.技能名称 != null">
+        技能名称 = #{record.技能名称,jdbcType=VARCHAR},
+      </if>
+      <if test="record.技能描述 != null">
+        技能描述 = #{record.技能描述,jdbcType=VARCHAR},
+      </if>
+      <if test="record.羁绊消耗 != null">
+        羁绊消耗 = #{record.羁绊消耗,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f9 != null">
+        f9 = #{record.f9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f10 != null">
+        f10 = #{record.f10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f11 != null">
+        f11 = #{record.f11,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update 基因表
+    set 基因编号 = #{record.基因编号,jdbcType=INTEGER},
+      基因名称 = #{record.基因名称,jdbcType=VARCHAR},
+      技能类型 = #{record.技能类型,jdbcType=VARCHAR},
+      技能属性 = #{record.技能属性,jdbcType=VARCHAR},
+      必要等级 = #{record.必要等级,jdbcType=VARCHAR},
+      基因出处 = #{record.基因出处,jdbcType=VARCHAR},
+      技能名称 = #{record.技能名称,jdbcType=VARCHAR},
+      技能描述 = #{record.技能描述,jdbcType=VARCHAR},
+      羁绊消耗 = #{record.羁绊消耗,jdbcType=VARCHAR},
+      f9 = #{record.f9,jdbcType=VARCHAR},
+      f10 = #{record.f10,jdbcType=VARCHAR},
+      f11 = #{record.f11,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enuaruke.mhs2.pojo.Gene">
+    update 基因表
+    <set>
+      <if test="基因名称 != null">
+        基因名称 = #{基因名称,jdbcType=VARCHAR},
+      </if>
+      <if test="技能类型 != null">
+        技能类型 = #{技能类型,jdbcType=VARCHAR},
+      </if>
+      <if test="技能属性 != null">
+        技能属性 = #{技能属性,jdbcType=VARCHAR},
+      </if>
+      <if test="必要等级 != null">
+        必要等级 = #{必要等级,jdbcType=VARCHAR},
+      </if>
+      <if test="基因出处 != null">
+        基因出处 = #{基因出处,jdbcType=VARCHAR},
+      </if>
+      <if test="技能名称 != null">
+        技能名称 = #{技能名称,jdbcType=VARCHAR},
+      </if>
+      <if test="技能描述 != null">
+        技能描述 = #{技能描述,jdbcType=VARCHAR},
+      </if>
+      <if test="羁绊消耗 != null">
+        羁绊消耗 = #{羁绊消耗,jdbcType=VARCHAR},
+      </if>
+      <if test="f9 != null">
+        f9 = #{f9,jdbcType=VARCHAR},
+      </if>
+      <if test="f10 != null">
+        f10 = #{f10,jdbcType=VARCHAR},
+      </if>
+      <if test="f11 != null">
+        f11 = #{f11,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where 基因编号 = #{基因编号,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enuaruke.mhs2.pojo.Gene">
+    update 基因表
+    set 基因名称 = #{基因名称,jdbcType=VARCHAR},
+      技能类型 = #{技能类型,jdbcType=VARCHAR},
+      技能属性 = #{技能属性,jdbcType=VARCHAR},
+      必要等级 = #{必要等级,jdbcType=VARCHAR},
+      基因出处 = #{基因出处,jdbcType=VARCHAR},
+      技能名称 = #{技能名称,jdbcType=VARCHAR},
+      技能描述 = #{技能描述,jdbcType=VARCHAR},
+      羁绊消耗 = #{羁绊消耗,jdbcType=VARCHAR},
+      f9 = #{f9,jdbcType=VARCHAR},
+      f10 = #{f10,jdbcType=VARCHAR},
+      f11 = #{f11,jdbcType=VARCHAR}
+    where 基因编号 = #{基因编号,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>怪物猎人物语2</title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/commons.js"></script>
+</head>
+<body>
+  <script>
+    $("body").append(topPage).append(onselect);
+  </script>
+
+
+  <table id="zoneTable" style="border-collapse:separate;border-spacing: 100px 20px">
+
+  </table>
+
+  <div id="zoneInfo">
+
+  </div>
+</body>
+<script>
+  var url = "https://mhs2.enuaruke.com/mhs2Service/";
+  var normal = [];
+  var final = [];
+
+  window.onload = function(){
+
+
+    $.ajax({
+      url: url + "selectZone",
+      success: function(data){
+        var zoneList =  data.data;
+        var flag = 4;
+        for (let i = 0; i < zoneList.length; i++) {
+          var zone = zoneList[i];
+          if(flag == 3){
+            $("#zoneTable").append("<tr>")
+          }
+          $("#zoneTable").append("<td width='200'>" +
+                  "<button id='button" + zone.地带编号 +"' type='button' class=\"btn btn-primary\" style='width: 100%; height: 100%' onclick='initZoneInfo("+ zone.地带编号 +")'>" + zone.地带名称 + "地带</button>" +
+                  "</td>")
+          if(flag == 4){
+            flag = 0;
+            $("#zoneTable").append("</tr>")
+          }
+          flag ++;
+        }
+      }
+    })
+  }
+
+  function initZoneInfo(zoneId){
+    $.ajax({
+      url: url + "/selectZoneMonster",
+      data:{zoneId: zoneId},
+      success: function(data){
+        normal = data.data.normal;
+        final = data.data.final;
+        initWeakNessTable();
+      }
+    })
+  }
+  function initWeakNessTable() {
+    $("#zoneInfo").empty();
+    $("#zoneInfo").append("<table class=\"table\">\n" +
+            "        <caption style=\"align-content: center\">\n" +
+            "          <h1> 普通窝 </h1>" +
+            "        </caption>\n" +
+            "        <thead>\n" +
+            "        <tr>\n" +
+            "            <th width=\"100\">编号</th>\n" +
+            "            <th width=\"100\">名称</th>\n" +
+            "            <th width=\"100\">攻击属性</th>\n" +
+            "            <th width=\"100\">属性弱点</th>\n" +
+            "            <th width=\"400\">部位弱点</th>\n" +
+            "            <th width=\"200\">招式弱点</th>\n" +
+            "            <th>备注</th>\n" +
+            "        </tr>\n" +
+            "        </thead>\n" +
+            "\n" +
+            "        <tbody id=\"normalTable\">\n" +
+            "\n" +
+            "        </tbody>\n" +
+            "    </table>")
+    $("#zoneInfo").append("<hr>")
+    $("#zoneInfo").append("<table class=\"table\">\n" +
+            "        <caption style=\"align-content: center\">\n" +
+            "          <h1> 最终窝 </h1>" +
+            "        </caption>\n" +
+            "        <thead>\n" +
+            "        <tr>\n" +
+            "            <th width=\"100\">编号</th>\n" +
+            "            <th width=\"100\">名称</th>\n" +
+            "            <th width=\"100\">攻击属性</th>\n" +
+            "            <th width=\"100\">属性弱点</th>\n" +
+            "            <th width=\"400\">部位弱点</th>\n" +
+            "            <th width=\"200\">招式弱点</th>\n" +
+            "            <th>备注</th>\n" +
+            "        </tr>\n" +
+            "        </thead>\n" +
+            "\n" +
+            "        <tbody id=\"finalTable\">\n" +
+            "\n" +
+            "        </tbody>\n" +
+            "    </table>")
+    initTable();
+  }
+
+  function initTable(){
+    for (let i = 0; i < normal.length; i++) {
+      var element = normal[i];
+      if (element.攻击属性 == null) element.攻击属性 = "-";
+      if (element.属性弱点 == null) element.属性弱点 = "-";
+      if (element.部位弱点 == null) element.部位弱点 = "-";
+      if (element.招式弱点 == null) element.招式弱点 = "-";
+      if (element.备注 == null) element.备注 = "-";
+
+      if (i % 2 == 0) {
+        $("#normalTable").append("<tr style='background-color: lightcyan'>" +
+                "<td>" + element.编号 + "</td>" +
+                "<td>" + element.名称 + "</td>" +
+                "<td>" + element.攻击属性 + "</td>" +
+                "<td>" + element.属性弱点 + "</td>" +
+                "<td>" + element.部位弱点 + "</td>" +
+                "<td>" + element.招式弱点 + "</td>" +
+                "<td>" + element.备注 + "</td>" +
+                "</tr>"
+        );
+      } else {
+        $("#normalTable").append("<tr style='background-color: white'>" +
+                "<td>" + element.编号 + "</td>" +
+                "<td>" + element.名称 + "</td>" +
+                "<td>" + element.攻击属性 + "</td>" +
+                "<td>" + element.属性弱点 + "</td>" +
+                "<td>" + element.部位弱点 + "</td>" +
+                "<td>" + element.招式弱点 + "</td>" +
+                "<td>" + element.备注 + "</td>" +
+                "</tr>"
+        );
+      }
+    }
+
+    for (let i = 0; i < final.length; i++) {
+      var element = final[i];
+      if (element.攻击属性 == null) element.攻击属性 = "-";
+      if (element.属性弱点 == null) element.属性弱点 = "-";
+      if (element.部位弱点 == null) element.部位弱点 = "-";
+      if (element.招式弱点 == null) element.招式弱点 = "-";
+      if (element.备注 == null) element.备注 = "-";
+
+      if (i % 2 == 0) {
+        $("#finalTable").append("<tr style='background-color: lightcyan'>" +
+                "<td>" + element.编号 + "</td>" +
+                "<td>" + element.名称 + "</td>" +
+                "<td>" + element.攻击属性 + "</td>" +
+                "<td>" + element.属性弱点 + "</td>" +
+                "<td>" + element.部位弱点 + "</td>" +
+                "<td>" + element.招式弱点 + "</td>" +
+                "<td>" + element.备注 + "</td>" +
+                "</tr>"
+        );
+      } else {
+        $("#finalTable").append("<tr style='background-color: white'>" +
+                "<td>" + element.编号 + "</td>" +
+                "<td>" + element.名称 + "</td>" +
+                "<td>" + element.攻击属性 + "</td>" +
+                "<td>" + element.属性弱点 + "</td>" +
+                "<td>" + element.部位弱点 + "</td>" +
+                "<td>" + element.招式弱点 + "</td>" +
+                "<td>" + element.备注 + "</td>" +
+                "</tr>"
+        );
+      }
+    }
+  }
+</script>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>怪物猎人物语2 - 怪物详细资料</title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/commons.js"></script>
+</head>
+<body>
+
+
+<div>
+  <table class="table table-hover">
+    <caption style="width: 40%">
+      <table>
+        <tr>
+          <td width="60">
+            怪物名称:
+          </td>
+          <td width="200">
+            <input id="name" width="20%" type="text" class="form-control">
+          </td>
+          <td width="50">
+            素材名:
+          </td>
+          <td>
+            <input id="materialName" width="20%" type="text" class="form-control">
+          </td>
+          <td width="50">
+            <button id="search" type="button" class="btn btn-primary">搜索</button>
+          </td>
+          <td width="50">
+            <button id="reset" type="button" class="btn btn-primary">重置</button>
+          </td>
+        </tr>
+      </table>
+    </caption>
+
+    <thead>
+    <tr>
+      <th width="50">名称</th>
+      <th width="70">稀有度</th>
+      <th>栖息地</th>
+      <th>归巢条件</th>
+      <th>下位:素材</th>
+      <th>下位:部位信息</th>
+      <th>上位:素材</th>
+      <th>上位:部位信息</th>
+    </tr>
+    </thead>
+    <tbody id="monsterTable">
+
+    </tbody>
+  </table>
+</div>
+
+
+</body>
+
+<script>
+  var monsterList = [];
+  var url = "https://mhs2.enuaruke.com/";
+
+  function initTable(monsterList){
+    $("#monsterTable").empty();
+    for (let i = 0; i < monsterList.length; i++) {
+      var e = monsterList[i];
+
+      if(e.栖息地 == null) e.栖息地="-"
+      if(e.归巢条件 == null) e.归巢条件="-"
+      if(e.下位获取素材 == null) e.下位获取素材="-"
+      if(e.下位部位信息 == null) e.下位部位信息="-"
+      if(e.上位获取素材 == null) e.上位获取素材="-"
+      if(e.上位部位信息 == null) e.上位部位信息="-"
+
+      $("#monsterTable").append(
+              "<tr>" +
+              "<td>" + e.名称 + "</td>" +
+              "<td>" + e.稀有度 + "</td>" +
+              "<td>" + e.栖息地 + "</td>" +
+              "<td>" + e.归巢条件 + "</td>" +
+              "<td>" + e.下位获取素材 + "</td>" +
+              "<td>" + e.下位部位信息 + "</td>" +
+              "<td>" + e.上位获取素材 + "</td>" +
+              "<td>" + e.上位部位信息 + "</td>" +
+              "</tr>"
+      )
+    }
+  }
+
+  $("#search").click(function (){
+    showWaiting()
+    $.ajax({
+      url: url + "mhs2Service/selectMonster",
+      data:{
+        name: $("#name").val(),
+        materialName: $("#materialName").val()
+      },
+      success: function(data){
+        weaknessTable = data.data;
+        initTable(weaknessTable);
+        hideWaiting()
+      }
+    })
+  })
+  $("#reset").click(function(){
+    showWaiting()
+    $.ajax({
+      url: url + "mhs2Service/selectMonster",
+      success: function(data){
+        weaknessTable = data.data;
+        initTable(weaknessTable);
+        hideWaiting()
+      }
+    })
+  })
+
+  window.onload = function() {
+    $("body").prepend(topPage).prepend(onSelect);
+    showWaiting();
+      $.ajax({
+        url: url + "mhs2Service/selectMonster",
+        success: function(data){
+          this.monsterList = data.data;
+          initTable(this.monsterList);
+          hideWaiting();
+        }
+      })
+  }
+</script>
+
+</html>

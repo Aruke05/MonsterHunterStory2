@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enuaruke.mhs2.mapper.MonsterMapper">
+  <resultMap id="BaseResultMap" type="com.enuaruke.mhs2.pojo.Monster">
+    <id column="编号" jdbcType="VARCHAR" property="编号" />
+    <result column="名称" jdbcType="VARCHAR" property="名称" />
+    <result column="稀有度" jdbcType="VARCHAR" property="稀有度" />
+    <result column="栖息地" jdbcType="VARCHAR" property="栖息地" />
+    <result column="归巢条件" jdbcType="VARCHAR" property="归巢条件" />
+    <result column="下位_获取素材" jdbcType="VARCHAR" property="下位获取素材" />
+    <result column="下位_部位信息" jdbcType="VARCHAR" property="下位部位信息" />
+    <result column="上位_获取素材" jdbcType="VARCHAR" property="上位获取素材" />
+    <result column="上位_部位信息" jdbcType="VARCHAR" property="上位部位信息" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    编号, 名称, 稀有度, 栖息地, 归巢条件, 下位_获取素材, 下位_部位信息, 上位_获取素材, 上位_部位信息
+  </sql>
+  <select id="selectByExample" parameterType="com.enuaruke.mhs2.pojo.MonsterExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from 怪物详细资料
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from 怪物详细资料
+    where 编号 = #{编号,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from 怪物详细资料
+    where 编号 = #{编号,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.enuaruke.mhs2.pojo.MonsterExample">
+    delete from 怪物详细资料
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="编号" keyProperty="编号" parameterType="com.enuaruke.mhs2.pojo.Monster" useGeneratedKeys="true">
+    insert into 怪物详细资料 (名称, 稀有度, 栖息地, 
+      归巢条件, 下位_获取素材, 下位_部位信息, 
+      上位_获取素材, 上位_部位信息)
+    values (#{名称,jdbcType=VARCHAR}, #{稀有度,jdbcType=VARCHAR}, #{栖息地,jdbcType=VARCHAR}, 
+      #{归巢条件,jdbcType=VARCHAR}, #{下位获取素材,jdbcType=VARCHAR}, #{下位部位信息,jdbcType=VARCHAR}, 
+      #{上位获取素材,jdbcType=VARCHAR}, #{上位部位信息,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="编号" keyProperty="编号" parameterType="com.enuaruke.mhs2.pojo.Monster" useGeneratedKeys="true">
+    insert into 怪物详细资料
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="名称 != null">
+        名称,
+      </if>
+      <if test="稀有度 != null">
+        稀有度,
+      </if>
+      <if test="栖息地 != null">
+        栖息地,
+      </if>
+      <if test="归巢条件 != null">
+        归巢条件,
+      </if>
+      <if test="下位获取素材 != null">
+        下位_获取素材,
+      </if>
+      <if test="下位部位信息 != null">
+        下位_部位信息,
+      </if>
+      <if test="上位获取素材 != null">
+        上位_获取素材,
+      </if>
+      <if test="上位部位信息 != null">
+        上位_部位信息,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="名称 != null">
+        #{名称,jdbcType=VARCHAR},
+      </if>
+      <if test="稀有度 != null">
+        #{稀有度,jdbcType=VARCHAR},
+      </if>
+      <if test="栖息地 != null">
+        #{栖息地,jdbcType=VARCHAR},
+      </if>
+      <if test="归巢条件 != null">
+        #{归巢条件,jdbcType=VARCHAR},
+      </if>
+      <if test="下位获取素材 != null">
+        #{下位获取素材,jdbcType=VARCHAR},
+      </if>
+      <if test="下位部位信息 != null">
+        #{下位部位信息,jdbcType=VARCHAR},
+      </if>
+      <if test="上位获取素材 != null">
+        #{上位获取素材,jdbcType=VARCHAR},
+      </if>
+      <if test="上位部位信息 != null">
+        #{上位部位信息,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.enuaruke.mhs2.pojo.MonsterExample" resultType="java.lang.Long">
+    select count(*) from 怪物详细资料
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectZone" resultType="com.enuaruke.mhs2.pojo.Zone">
+    select *
+    from `探索地带`
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update 怪物详细资料
+    <set>
+      <if test="record.编号 != null">
+        编号 = #{record.编号,jdbcType=VARCHAR},
+      </if>
+      <if test="record.名称 != null">
+        名称 = #{record.名称,jdbcType=VARCHAR},
+      </if>
+      <if test="record.稀有度 != null">
+        稀有度 = #{record.稀有度,jdbcType=VARCHAR},
+      </if>
+      <if test="record.栖息地 != null">
+        栖息地 = #{record.栖息地,jdbcType=VARCHAR},
+      </if>
+      <if test="record.归巢条件 != null">
+        归巢条件 = #{record.归巢条件,jdbcType=VARCHAR},
+      </if>
+      <if test="record.下位获取素材 != null">
+        下位_获取素材 = #{record.下位获取素材,jdbcType=VARCHAR},
+      </if>
+      <if test="record.下位部位信息 != null">
+        下位_部位信息 = #{record.下位部位信息,jdbcType=VARCHAR},
+      </if>
+      <if test="record.上位获取素材 != null">
+        上位_获取素材 = #{record.上位获取素材,jdbcType=VARCHAR},
+      </if>
+      <if test="record.上位部位信息 != null">
+        上位_部位信息 = #{record.上位部位信息,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update 怪物详细资料
+    set 编号 = #{record.编号,jdbcType=VARCHAR},
+      名称 = #{record.名称,jdbcType=VARCHAR},
+      稀有度 = #{record.稀有度,jdbcType=VARCHAR},
+      栖息地 = #{record.栖息地,jdbcType=VARCHAR},
+      归巢条件 = #{record.归巢条件,jdbcType=VARCHAR},
+      下位_获取素材 = #{record.下位获取素材,jdbcType=VARCHAR},
+      下位_部位信息 = #{record.下位部位信息,jdbcType=VARCHAR},
+      上位_获取素材 = #{record.上位获取素材,jdbcType=VARCHAR},
+      上位_部位信息 = #{record.上位部位信息,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enuaruke.mhs2.pojo.Monster">
+    update 怪物详细资料
+    <set>
+      <if test="名称 != null">
+        名称 = #{名称,jdbcType=VARCHAR},
+      </if>
+      <if test="稀有度 != null">
+        稀有度 = #{稀有度,jdbcType=VARCHAR},
+      </if>
+      <if test="栖息地 != null">
+        栖息地 = #{栖息地,jdbcType=VARCHAR},
+      </if>
+      <if test="归巢条件 != null">
+        归巢条件 = #{归巢条件,jdbcType=VARCHAR},
+      </if>
+      <if test="下位获取素材 != null">
+        下位_获取素材 = #{下位获取素材,jdbcType=VARCHAR},
+      </if>
+      <if test="下位部位信息 != null">
+        下位_部位信息 = #{下位部位信息,jdbcType=VARCHAR},
+      </if>
+      <if test="上位获取素材 != null">
+        上位_获取素材 = #{上位获取素材,jdbcType=VARCHAR},
+      </if>
+      <if test="上位部位信息 != null">
+        上位_部位信息 = #{上位部位信息,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where 编号 = #{编号,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enuaruke.mhs2.pojo.Monster">
+    update 怪物详细资料
+    set 名称 = #{名称,jdbcType=VARCHAR},
+      稀有度 = #{稀有度,jdbcType=VARCHAR},
+      栖息地 = #{栖息地,jdbcType=VARCHAR},
+      归巢条件 = #{归巢条件,jdbcType=VARCHAR},
+      下位_获取素材 = #{下位获取素材,jdbcType=VARCHAR},
+      下位_部位信息 = #{下位部位信息,jdbcType=VARCHAR},
+      上位_获取素材 = #{上位获取素材,jdbcType=VARCHAR},
+      上位_部位信息 = #{上位部位信息,jdbcType=VARCHAR}
+    where 编号 = #{编号,jdbcType=VARCHAR}
+  </update>
+</mapper>

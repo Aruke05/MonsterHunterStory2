@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>怪物猎人物语2 - 怪物弱点</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.0/jquery.cookie.min.js"></script>
+    <script src="js/commons.js"></script>
+    <script src="js/msg.js"></script>
+</head>
+<body>
+
+
+<div>
+    <table class="table">
+        <caption style="width: 40%">
+            <table>
+                <tr>
+                    <td width="60">
+                        怪物名称:
+                    </td>
+                    <td width="200">
+                        <input id="name" width="20%" type="text" class="form-control">
+                    </td>
+                    <td width="50">
+                        <button id="search" type="button" class="btn btn-primary">搜索</button>
+                    </td>
+                    <td width="50">
+                        <button id="reset" type="button" class="btn btn-primary">重置</button>
+                    </td>
+                </tr>
+            </table>
+        </caption>
+        <thead>
+        <tr>
+            <th width="100">编号</th>
+            <th width="100">名称</th>
+            <th width="100">攻击属性</th>
+            <th width="100">属性弱点</th>
+            <th width="400">部位弱点</th>
+            <th width="200">招式弱点</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody id="weaknessTable">
+
+        </tbody>
+    </table>
+</div>
+
+
+
+</body>
+
+<script>
+    var weaknessTable = [];
+    var url = "https://mhs2.enuaruke.com/";
+
+    function initTable(weaknessTable) {
+        $("#weaknessTable").empty();
+        for (let i = 0; i < weaknessTable.length; i++) {
+            var element = weaknessTable[i];
+            if(element.攻击属性 == null) element.攻击属性 = "-";
+            if(element.属性弱点 == null) element.属性弱点 = "-";
+            if(element.部位弱点 == null) element.部位弱点 = "-";
+            if(element.招式弱点 == null) element.招式弱点 = "-";
+            if(element.备注 == null) element.备注 = "-";
+
+            if(i % 2 == 0) {
+                $("#weaknessTable").append("<tr style='background-color: lightcyan'>" +
+                    "<td>" + element.编号 +"</td>"+
+                    "<td>" + element.名称 +"</td>"+
+                    "<td>" + element.攻击属性 +"</td>"+
+                    "<td>" + element.属性弱点 +"</td>"+
+                    "<td>" + element.部位弱点 +"</td>"+
+                    "<td>" + element.招式弱点 +"</td>"+
+                    "<td>" + element.备注 +"</td>" +
+                    "<td>" +
+                    "    <button type='button' class='btn btn-info' onclick='addWeaknessList(" + element.编号 + ")'>加入备忘录</button>" +
+                    "</td>"+
+                    "</tr>"
+                );
+            }else {
+                $("#weaknessTable").append("<tr style='background-color: lightsteelblue'>" +
+                    "<td>" + element.编号 +"</td>"+
+                    "<td>" + element.名称 +"</td>"+
+                    "<td>" + element.攻击属性 +"</td>"+
+                    "<td>" + element.属性弱点 +"</td>"+
+                    "<td>" + element.部位弱点 +"</td>"+
+                    "<td>" + element.招式弱点 +"</td>"+
+                    "<td>" + element.备注 +"</td>"+
+                    "<td>" +
+                    "    <button type='button' class='btn btn-info' onclick='addWeaknessList(" + element.编号 + ")'>加入备忘录</button>" +
+                    "</td>"+
+                    "</tr>"
+                );
+            }
+
+
+        }
+    }
+
+    function addWeaknessList(id){
+        var weaknessList = [];
+        var flag = true;
+        if($.cookie("weaknessList") != null && $.cookie("weaknessList") != "")
+            weaknessList = JSON.parse($.cookie("weaknessList"));
+        //校验
+        for (let i = 0; i < weaknessList.length; i++) {
+            if(id == weaknessList[i]) flag = false;
+        }
+        if(flag){
+            weaknessList.push(id);
+            $.cookie("weaknessList",JSON.stringify(weaknessList));
+            ShowSuccess("添加成功");
+        }else{
+            ShowFailure("不要重复添加");
+        }
+    }
+
+    window.onload = function(){
+        $("body").prepend(topPage).prepend(onSelect);
+        showWaiting();
+        $.ajax({
+            url: url + "mhs2Service/selectWeakness",
+            success: function(data){
+                weaknessTable = data.data;
+                initTable(weaknessTable);
+                hideWaiting()
+            }
+        })
+
+        $("#search").click(function (){
+            showWaiting()
+            $.ajax({
+                url: url + "mhs2Service/selectWeakness",
+                data:{ name: $("#name").val()},
+                success: function(data){
+                    weaknessTable = data.data;
+                    initTable(weaknessTable);
+                    hideWaiting()
+                }
+            })
+        })
+        $("#reset").click(function(){
+            showWaiting()
+            $.ajax({
+                url: url + "mhs2Service/selectWeakness",
+                success: function(data){
+                    weaknessTable = data.data;
+                    initTable(weaknessTable);
+                    hideWaiting()
+                }
+            })
+        })
+
+    }
+</script>
+
+</html>

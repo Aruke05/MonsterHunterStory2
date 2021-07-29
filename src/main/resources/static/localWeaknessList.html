@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>怪物猎人物语2 - 怪物弱点</title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/jquery-cookie/1.0/jquery.cookie.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/commons.js"></script>
+  <script src="js/msg.js"></script>
+</head>
+<body>
+
+
+<div>
+  <table class="table">
+    <thead>
+    <caption>
+      <table>
+        <tr>
+          <td>
+            <button id="empty" type="button" class="btn btn-primary">清空</button>
+          </td>
+        </tr>
+      </table>
+    </caption>
+    <tr>
+      <th width="100">编号</th>
+      <th width="100">名称</th>
+      <th width="100">攻击属性</th>
+      <th width="100">属性弱点</th>
+      <th width="400">部位弱点</th>
+      <th width="200">招式弱点</th>
+      <th>备注</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+
+    <tbody id="weaknessTable">
+
+    </tbody>
+  </table>
+</div>
+
+</body>
+
+<script>
+  var weaknessTable = [];
+  var url = "https://mhs2.enuaruke.com/";
+
+  function initTable(weaknessTable) {
+    for (let i = 0; i < weaknessTable.length; i++) {
+      var element = weaknessTable[i];
+      if(element.攻击属性 == null) element.攻击属性 = "-";
+      if(element.属性弱点 == null) element.属性弱点 = "-";
+      if(element.部位弱点 == null) element.部位弱点 = "-";
+      if(element.招式弱点 == null) element.招式弱点 = "-";
+      if(element.备注 == null) element.备注 = "-";
+
+      if(i % 2 == 0) {
+        $("#weaknessTable").append("<tr style='background-color: lightcyan'>" +
+                "<td>" + element.编号 +"</td>"+
+                "<td>" + element.名称 +"</td>"+
+                "<td>" + element.攻击属性 +"</td>"+
+                "<td>" + element.属性弱点 +"</td>"+
+                "<td>" + element.部位弱点 +"</td>"+
+                "<td>" + element.招式弱点 +"</td>"+
+                "<td>" + element.备注 +"</td>" +
+                "<td>" +
+                "    <button type='button' class='btn btn-info' onclick='removeWeaknessList(" + element.编号 + ")'>删除</button>" +
+                "</td>"+
+                "</tr>"
+        );
+      }else {
+        $("#weaknessTable").append("<tr style='background-color: lightsteelblue'>" +
+                "<td>" + element.编号 +"</td>"+
+                "<td>" + element.名称 +"</td>"+
+                "<td>" + element.攻击属性 +"</td>"+
+                "<td>" + element.属性弱点 +"</td>"+
+                "<td>" + element.部位弱点 +"</td>"+
+                "<td>" + element.招式弱点 +"</td>"+
+                "<td>" + element.备注 +"</td>"+
+                "<td>" +
+                "    <button type='button' class='btn btn-info' onclick='removeWeaknessList(" + element.编号 + ")'>删除</button>" +
+                "</td>"+
+                "</tr>"
+        );
+      }
+
+
+    }
+  }
+
+  $("#empty").click(function(){
+    $.cookie("weaknessList","");
+    $("#weaknessTable").empty();
+    ShowSuccess("已清空");
+  })
+
+  function removeWeaknessList(id){
+    var parse = [];
+    parse = JSON.parse($.cookie("weaknessList"));
+    for (i in parse) {
+      if(parse[i] == id){
+        parse.splice(i, 1);
+        break;
+      }
+    }
+    if(parse.length == 0)
+      $.cookie("weaknessList","");
+    else
+      $.cookie("weaknessList",JSON.stringify(parse));
+
+    $("#weaknessTable").empty();
+    selectByCookie();
+
+
+    ShowSuccess("删除成功");
+  }
+
+  window.onload = function(){
+    $("body").prepend(topPage).prepend(onSelect);
+    selectByCookie();
+
+/*    $("#search").click(function (){
+      showWaiting()
+      $.ajax({
+        url: url + "mhs2Service/selectWeakness",
+        data:{ name: $("#name").val()},
+        success: function(data){
+          weaknessTable = data.data;
+          initTable(weaknessTable);
+          hideWaiting()
+        }
+      })
+    })
+    $("#reset").click(function(){
+      showWaiting()
+      $.ajax({
+        url: url + "mhs2Service/selectWeakness",
+        success: function(data){
+          weaknessTable = data.data;
+          initTable(weaknessTable);
+          hideWaiting()
+        }
+      })
+    })*/
+
+  }
+
+  function selectByCookie(){
+    showWaiting();
+    if($.cookie("weaknessList") != null && $.cookie("weaknessList") != "")
+      $.ajax({
+        method: "post",
+        url: url + "mhs2Service/selectWeaknessList",
+        data: $.cookie("weaknessList"),
+        headers:{
+          "Content-Type": "application/json"
+        },
+        success: function(data){
+          weaknessTable = data.data;
+          initTable(weaknessTable);
+          hideWaiting();
+        }
+      })
+    else{
+      ShowFailure("备忘录中没有数据")
+      hideWaiting();
+    }
+  }
+</script>
+
+</html>

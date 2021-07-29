@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enuaruke.mhs2.mapper.怪物出招表Mapper">
+  <resultMap id="BaseResultMap" type="com.enuaruke.mhs2.pojo.怪物出招表">
+    <result column="怪物名" jdbcType="VARCHAR" property="怪物名" />
+    <result column="普通状态" jdbcType="VARCHAR" property="普通状态" />
+    <result column="愤怒状态" jdbcType="VARCHAR" property="愤怒状态" />
+    <result column="特殊状态" jdbcType="VARCHAR" property="特殊状态" />
+    <result column="部位弱点" jdbcType="VARCHAR" property="部位弱点" />
+    <result column="f6" jdbcType="VARCHAR" property="f6" />
+    <result column="f7" jdbcType="VARCHAR" property="f7" />
+    <result column="f8" jdbcType="VARCHAR" property="f8" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    怪物名, 普通状态, 愤怒状态, 特殊状态, 部位弱点, f6, f7, f8
+  </sql>
+  <select id="selectByExample" parameterType="com.enuaruke.mhs2.pojo.怪物出招表Example" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from 怪物出招表
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.enuaruke.mhs2.pojo.怪物出招表Example">
+    delete from 怪物出招表
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.enuaruke.mhs2.pojo.怪物出招表">
+    insert into 怪物出招表 (怪物名, 普通状态, 愤怒状态, 
+      特殊状态, 部位弱点, f6, f7, 
+      f8)
+    values (#{怪物名,jdbcType=VARCHAR}, #{普通状态,jdbcType=VARCHAR}, #{愤怒状态,jdbcType=VARCHAR}, 
+      #{特殊状态,jdbcType=VARCHAR}, #{部位弱点,jdbcType=VARCHAR}, #{f6,jdbcType=VARCHAR}, #{f7,jdbcType=VARCHAR}, 
+      #{f8,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.enuaruke.mhs2.pojo.怪物出招表">
+    insert into 怪物出招表
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="怪物名 != null">
+        怪物名,
+      </if>
+      <if test="普通状态 != null">
+        普通状态,
+      </if>
+      <if test="愤怒状态 != null">
+        愤怒状态,
+      </if>
+      <if test="特殊状态 != null">
+        特殊状态,
+      </if>
+      <if test="部位弱点 != null">
+        部位弱点,
+      </if>
+      <if test="f6 != null">
+        f6,
+      </if>
+      <if test="f7 != null">
+        f7,
+      </if>
+      <if test="f8 != null">
+        f8,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="怪物名 != null">
+        #{怪物名,jdbcType=VARCHAR},
+      </if>
+      <if test="普通状态 != null">
+        #{普通状态,jdbcType=VARCHAR},
+      </if>
+      <if test="愤怒状态 != null">
+        #{愤怒状态,jdbcType=VARCHAR},
+      </if>
+      <if test="特殊状态 != null">
+        #{特殊状态,jdbcType=VARCHAR},
+      </if>
+      <if test="部位弱点 != null">
+        #{部位弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="f6 != null">
+        #{f6,jdbcType=VARCHAR},
+      </if>
+      <if test="f7 != null">
+        #{f7,jdbcType=VARCHAR},
+      </if>
+      <if test="f8 != null">
+        #{f8,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.enuaruke.mhs2.pojo.怪物出招表Example" resultType="java.lang.Long">
+    select count(*) from 怪物出招表
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update 怪物出招表
+    <set>
+      <if test="record.怪物名 != null">
+        怪物名 = #{record.怪物名,jdbcType=VARCHAR},
+      </if>
+      <if test="record.普通状态 != null">
+        普通状态 = #{record.普通状态,jdbcType=VARCHAR},
+      </if>
+      <if test="record.愤怒状态 != null">
+        愤怒状态 = #{record.愤怒状态,jdbcType=VARCHAR},
+      </if>
+      <if test="record.特殊状态 != null">
+        特殊状态 = #{record.特殊状态,jdbcType=VARCHAR},
+      </if>
+      <if test="record.部位弱点 != null">
+        部位弱点 = #{record.部位弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f6 != null">
+        f6 = #{record.f6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f7 != null">
+        f7 = #{record.f7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f8 != null">
+        f8 = #{record.f8,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update 怪物出招表
+    set 怪物名 = #{record.怪物名,jdbcType=VARCHAR},
+      普通状态 = #{record.普通状态,jdbcType=VARCHAR},
+      愤怒状态 = #{record.愤怒状态,jdbcType=VARCHAR},
+      特殊状态 = #{record.特殊状态,jdbcType=VARCHAR},
+      部位弱点 = #{record.部位弱点,jdbcType=VARCHAR},
+      f6 = #{record.f6,jdbcType=VARCHAR},
+      f7 = #{record.f7,jdbcType=VARCHAR},
+      f8 = #{record.f8,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

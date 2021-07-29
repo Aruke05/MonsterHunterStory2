@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enuaruke.mhs2.mapper.WeaknessMapper">
+  <resultMap id="BaseResultMap" type="com.enuaruke.mhs2.pojo.Weakness">
+    <id column="编号" jdbcType="INTEGER" property="编号" />
+    <result column="名称" jdbcType="VARCHAR" property="名称" />
+    <result column="攻击属性" jdbcType="VARCHAR" property="攻击属性" />
+    <result column="属性弱点" jdbcType="VARCHAR" property="属性弱点" />
+    <result column="部位弱点" jdbcType="VARCHAR" property="部位弱点" />
+    <result column="招式弱点" jdbcType="VARCHAR" property="招式弱点" />
+    <result column="备注" jdbcType="VARCHAR" property="备注" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    编号, 名称, 攻击属性, 属性弱点, 部位弱点, 招式弱点, 备注
+  </sql>
+  <select id="selectByExample" parameterType="com.enuaruke.mhs2.pojo.WeaknessExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from 弱点
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from 弱点
+    where 编号 = #{编号,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from 弱点
+    where 编号 = #{编号,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.enuaruke.mhs2.pojo.WeaknessExample">
+    delete from 弱点
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="编号" keyProperty="编号" parameterType="com.enuaruke.mhs2.pojo.Weakness" useGeneratedKeys="true">
+    insert into 弱点 (名称, 攻击属性, 属性弱点, 
+      部位弱点, 招式弱点, 备注)
+    values (#{名称,jdbcType=VARCHAR}, #{攻击属性,jdbcType=VARCHAR}, #{属性弱点,jdbcType=VARCHAR}, 
+      #{部位弱点,jdbcType=VARCHAR}, #{招式弱点,jdbcType=VARCHAR}, #{备注,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="编号" keyProperty="编号" parameterType="com.enuaruke.mhs2.pojo.Weakness" useGeneratedKeys="true">
+    insert into 弱点
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="名称 != null">
+        名称,
+      </if>
+      <if test="攻击属性 != null">
+        攻击属性,
+      </if>
+      <if test="属性弱点 != null">
+        属性弱点,
+      </if>
+      <if test="部位弱点 != null">
+        部位弱点,
+      </if>
+      <if test="招式弱点 != null">
+        招式弱点,
+      </if>
+      <if test="备注 != null">
+        备注,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="名称 != null">
+        #{名称,jdbcType=VARCHAR},
+      </if>
+      <if test="攻击属性 != null">
+        #{攻击属性,jdbcType=VARCHAR},
+      </if>
+      <if test="属性弱点 != null">
+        #{属性弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="部位弱点 != null">
+        #{部位弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="招式弱点 != null">
+        #{招式弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="备注 != null">
+        #{备注,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.enuaruke.mhs2.pojo.WeaknessExample" resultType="java.lang.Long">
+    select count(*) from 弱点
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+    <select id="selectNormalByZoneId" resultType="com.enuaruke.mhs2.pojo.Weakness">
+      select `弱点`.*
+      from `弱点` , `地带_普通`, `探索地带`
+      where `弱点`.`编号` = `地带_普通`.`怪物编号`
+        and `地带_普通`.`地带编号` = `探索地带`.`地带编号`
+        and `探索地带`.`地带编号` = #{zoneId}
+    </select>
+
+  <select id="selectFinalByZoneId" resultType="com.enuaruke.mhs2.pojo.Weakness">
+    select `弱点`.*
+    from `弱点` , `地带_最终`, `探索地带`
+    where `弱点`.`编号` = `地带_最终`.`怪物编号`
+      and `地带_最终`.`地带编号` = `探索地带`.`地带编号`
+      and `探索地带`.`地带编号` = #{zoneId}
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update 弱点
+    <set>
+      <if test="record.编号 != null">
+        编号 = #{record.编号,jdbcType=INTEGER},
+      </if>
+      <if test="record.名称 != null">
+        名称 = #{record.名称,jdbcType=VARCHAR},
+      </if>
+      <if test="record.攻击属性 != null">
+        攻击属性 = #{record.攻击属性,jdbcType=VARCHAR},
+      </if>
+      <if test="record.属性弱点 != null">
+        属性弱点 = #{record.属性弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="record.部位弱点 != null">
+        部位弱点 = #{record.部位弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="record.招式弱点 != null">
+        招式弱点 = #{record.招式弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="record.备注 != null">
+        备注 = #{record.备注,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update 弱点
+    set 编号 = #{record.编号,jdbcType=INTEGER},
+      名称 = #{record.名称,jdbcType=VARCHAR},
+      攻击属性 = #{record.攻击属性,jdbcType=VARCHAR},
+      属性弱点 = #{record.属性弱点,jdbcType=VARCHAR},
+      部位弱点 = #{record.部位弱点,jdbcType=VARCHAR},
+      招式弱点 = #{record.招式弱点,jdbcType=VARCHAR},
+      备注 = #{record.备注,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.enuaruke.mhs2.pojo.Weakness">
+    update 弱点
+    <set>
+      <if test="名称 != null">
+        名称 = #{名称,jdbcType=VARCHAR},
+      </if>
+      <if test="攻击属性 != null">
+        攻击属性 = #{攻击属性,jdbcType=VARCHAR},
+      </if>
+      <if test="属性弱点 != null">
+        属性弱点 = #{属性弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="部位弱点 != null">
+        部位弱点 = #{部位弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="招式弱点 != null">
+        招式弱点 = #{招式弱点,jdbcType=VARCHAR},
+      </if>
+      <if test="备注 != null">
+        备注 = #{备注,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where 编号 = #{编号,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.enuaruke.mhs2.pojo.Weakness">
+    update 弱点
+    set 名称 = #{名称,jdbcType=VARCHAR},
+      攻击属性 = #{攻击属性,jdbcType=VARCHAR},
+      属性弱点 = #{属性弱点,jdbcType=VARCHAR},
+      部位弱点 = #{部位弱点,jdbcType=VARCHAR},
+      招式弱点 = #{招式弱点,jdbcType=VARCHAR},
+      备注 = #{备注,jdbcType=VARCHAR}
+    where 编号 = #{编号,jdbcType=INTEGER}
+  </update>
+</mapper>

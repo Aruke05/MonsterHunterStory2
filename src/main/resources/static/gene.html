@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>怪物猎人物语2 - 基因表</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/commons.js"></script>
+</head>
+<body>
+
+
+<div id="gane">
+    <table class="table">
+        <caption>
+            <table style="border-spacing: 10px">
+                <tr>
+                    <td width="70">
+                        基因名称:
+                    </td>
+                    <td>
+                        <input id="geneName" width="20%" type="text" class="form-control">
+                    </td>
+                    <td width="70">
+                        怪物名称:
+                    </td>
+                    <td>
+                        <input id="name" width="20%" type="text" class="form-control">
+                    </td>
+                    <td width="70">
+                        技能类型:
+                    </td>
+                    <td width="100">
+                        <select id="skillClass" required>
+                            <option value="" style="color:black;background-color: white">所有</option>
+                            <option value="无" style="color:black;background-color: white">无</option>
+                            <option value="力量" style="background-color: pink">力量</option>
+                            <option value="技巧" style="background-color: lightgreen">技巧</option>
+                            <option value="速度" style="background-color: lightskyblue">速度</option>
+                        </select>
+                    </td>
+                    <td width="70">
+                        技能属性:
+                    </td>
+                    <td width="70">
+                        <select id="skillProperty" required>
+                            <option value="" style="color:black;background-color: white">所有</option>
+                            <option value="无属性" style="color:black;background-color: white">无属性</option>
+                            <option value="火属性" style="background-color: pink">火属性</option>
+                            <option value="水属性" style="color: white;background-color: cornflowerblue">水属性</option>
+                            <option value="雷属性" style="background-color: yellow">雷属性</option>
+                            <option value="冰属性" style="background-color: lightskyblue">冰属性</option>
+                            <option value="龙属性" style="color:white;background-color: purple">龙属性</option>
+                        </select>
+                    </td>
+                    <td width="50">
+                        <button id="search" type="button" class="btn btn-primary">搜索</button>
+                    </td>
+                    <td width="50">
+                        <button id="reset" type="button" class="btn btn-primary">重置</button>
+                    </td>
+                </tr>
+            </table>
+        </caption>
+        <thead>
+        <tr>
+            <th>基因名称</th>
+            <th>技能类型</th>
+            <th>技能属性</th>
+            <th>必要等级</th>
+            <th>基因出处</th>
+            <th>技能名称</th>
+            <th>技能描述</th>
+            <th>羁绊消耗</th>
+        </tr>
+        </thead>
+
+        <tbody id="geneTable">
+
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+
+<script>
+    var geneList = [];
+    var url = "https://mhs2.enuaruke.com/mhs2Service/selectGene";
+
+    $("#skillClass").change(function(){
+        if($("#skillClass").val() == "所有")
+            $("#skillClass").css("background-color","white");
+        if($("#skillClass").val() == "无")
+            $("#skillClass").css("background-color","white");
+        if($("#skillClass").val() == "力量")
+            $("#skillClass").css("background-color","pink");
+        if($("#skillClass").val() == "技巧")
+            $("#skillClass").css("background-color","lightgreen");
+        if($("#skillClass").val() == "速度")
+            $("#skillClass").css("background-color","lightskyblue");
+    })
+
+    $("#skillProperty").change(function(){
+        if($("#skillProperty").val() == "所有"){
+            $("#skillProperty").css("background-color","white");
+            $("#skillProperty").css("color","black");
+        }
+        if($("#skillProperty").val() == "无属性"){
+            $("#skillProperty").css("background-color","white");
+            $("#skillProperty").css("color","black");
+        }
+        if($("#skillProperty").val() == "火属性"){
+            $("#skillProperty").css("background-color","pink");
+            $("#skillProperty").css("color","black");
+        }
+        if($("#skillProperty").val() == "水属性"){
+            $("#skillProperty").css("background-color","cornflowerblue");
+            $("#skillProperty").css("color","white");
+        }
+        if($("#skillProperty").val() == "雷属性"){
+            $("#skillProperty").css("background-color","yellow");
+            $("#skillProperty").css("color","black");
+        }
+        if($("#skillProperty").val() == "冰属性"){
+            $("#skillProperty").css("background-color","lightskyblue");
+            $("#skillProperty").css("color","white");
+        }
+        if($("#skillProperty").val() == "龙属性"){
+            $("#skillProperty").css("background-color","purple");
+            $("#skillProperty").css("color","white");
+        }
+    })
+
+    $("#search").click(function(){
+        showWaiting();
+        $.ajax({
+            url: url,
+            data: {
+                name: $("#name").val(),
+                geneName: $("#geneName").val(),
+                skillClass: $("#skillClass").val(),
+                skillProperty: $("#skillProperty").val()
+            },
+            success: function (data){
+                this.geneList = data.data;
+                initTable(this.geneList);
+                hideWaiting();
+            }
+        })
+    })
+
+    $("#reset").click(function(){
+        showWaiting();
+        $.ajax({
+            url: url,
+            success: function (data){
+                this.geneList = data.data;
+                initTable(this.geneList);
+                hideWaiting();
+            }
+        })
+    })
+
+
+    function initTable(geneList){
+        $("#geneTable").empty();
+        for (let i = 0; i < geneList.length; i++) {
+            var e = geneList[i];
+            var skillClass = e.技能类型;
+            if(skillClass == "主动-力量" || skillClass == "被动-力量"){
+                $("#geneTable").append("<tr style='background-color: pink'>" +
+                    "<td>" + e.基因名称 +"</td>" +
+                    "<td>" + e.技能类型 +"</td>" +
+                    "<td>" + e.技能属性 +"</td>" +
+                    "<td>" + e.必要等级 +"</td>" +
+                    "<td>" + e.基因出处 +"</td>" +
+                    "<td>" + e.技能名称 +"</td>" +
+                    "<td>" + e.技能描述 +"</td>" +
+                    "<td>" + e.羁绊消耗 +"</td>" +
+                    "</tr>")
+            }else if(skillClass == "主动-技巧" || skillClass == "被动-技巧"){
+                $("#geneTable").append("<tr style='background-color: palegreen'>" +
+                    "<td>" + e.基因名称 +"</td>" +
+                    "<td>" + e.技能类型 +"</td>" +
+                    "<td>" + e.技能属性 +"</td>" +
+                    "<td>" + e.必要等级 +"</td>" +
+                    "<td>" + e.基因出处 +"</td>" +
+                    "<td>" + e.技能名称 +"</td>" +
+                    "<td>" + e.技能描述 +"</td>" +
+                    "<td>" + e.羁绊消耗 +"</td>" +
+                    "</tr>")
+            }else if(skillClass == "主动-速度" || skillClass == "被动-速度"){
+                $("#geneTable").append("<tr style='background-color: powderblue'>" +
+                    "<td>" + e.基因名称 +"</td>" +
+                    "<td>" + e.技能类型 +"</td>" +
+                    "<td>" + e.技能属性 +"</td>" +
+                    "<td>" + e.必要等级 +"</td>" +
+                    "<td>" + e.基因出处 +"</td>" +
+                    "<td>" + e.技能名称 +"</td>" +
+                    "<td>" + e.技能描述 +"</td>" +
+                    "<td>" + e.羁绊消耗 +"</td>" +
+                    "</tr>")
+            }else{
+                $("#geneTable").append("<tr>" +
+                    "<td>" + e.基因名称 +"</td>" +
+                    "<td>" + e.技能类型 +"</td>" +
+                    "<td>" + e.技能属性 +"</td>" +
+                    "<td>" + e.必要等级 +"</td>" +
+                    "<td>" + e.基因出处 +"</td>" +
+                    "<td>" + e.技能名称 +"</td>" +
+                    "<td>" + e.技能描述 +"</td>" +
+                    "<td>" + e.羁绊消耗 +"</td>" +
+                    "</tr>")
+            }
+        }
+    }
+
+    window.onload = function(){
+        $("body").prepend(topPage).prepend(onSelect);
+        showWaiting();
+        $.ajax({
+            url: url,
+            data: {
+                name: $("#name").val(),
+                geneName: $("#geneName").val(),
+                skillClass: $("#skillClass").val(),
+                skillProperty: $("#skillProperty").val()
+            },
+            success: function (data){
+                this.geneList = data.data;
+                initTable(this.geneList);
+                hideWaiting();
+            }
+        })
+
+    }
+</script>
+
+</html>
