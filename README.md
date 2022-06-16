@@ -1,2 +1,2 @@
 # MonsterHunterStory2
-[地址](https://mhs2.enuaruke.com)
+~~[地址](https://mhs2.enuaruke.com)~~
